@@ -478,3 +478,10 @@ $RECYCLE.BIN/
 api/Omoqo.Task/.vs/Omoqo.Task/DesignTimeBuild/.dtbcache.v2
 api/Omoqo.Task/.vs/Omoqo.Task/DesignTimeBuild/.dtbcache.v2
 /api/Omoqo.Task/.vs/Omoqo.Task/DesignTimeBuild/.dtbcache.v2
+*.v2
+*.vsidx
+api/Omoqo.Task/.vs/Omoqo.Task/v17/.suo
+*.bin
+*.dll
+*.pdb
+*.json
