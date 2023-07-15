@@ -475,3 +475,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+api/Omoqo.Task/.vs/Omoqo.Task/DesignTimeBuild/.dtbcache.v2
+api/Omoqo.Task/.vs/Omoqo.Task/DesignTimeBuild/.dtbcache.v2
+/api/Omoqo.Task/.vs/Omoqo.Task/DesignTimeBuild/.dtbcache.v2

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
@@ -6,6 +7,11 @@ namespace API.Controllers
     [Route("[controller]")]
     public class BaseController : ControllerBase
     {
+        protected readonly ILogger _logger;
 
+        public BaseController(ILogger<BaseController> logger)
+        {
+            _logger = logger;
+        }
     }
 }
