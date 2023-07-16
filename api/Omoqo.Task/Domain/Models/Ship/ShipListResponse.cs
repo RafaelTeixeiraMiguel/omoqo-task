@@ -9,6 +9,6 @@ namespace Domain.Models.Ship
     public class ShipListResponse
     {
         public long Total { get; set; }
-        public List<ShipListItemResponse>? Data { get; set; }
+        public List<ShipListItemResponse>? Ships { get; set; }
     }
 }
