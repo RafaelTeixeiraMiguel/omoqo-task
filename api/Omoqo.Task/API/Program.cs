@@ -5,8 +5,10 @@ using Persistence;
 using Application.Common.Mapping;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+var corsPolicy = "CorsPolicy";
 
 // Add services to the container.
 
@@ -37,10 +39,10 @@ builder.Services.AddSingleton(_ => mapperConfiguration.CreateMapper());
 builder.Services.AddDependencyInjectionConfiguration();
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-    });
+    options.AddPolicy(corsPolicy,
+        builder => builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 });
 
 var app = builder.Build();
@@ -51,6 +53,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(corsPolicy);
 
 app.UseHttpsRedirection();
 
