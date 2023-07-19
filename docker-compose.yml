@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  api:
+    build: /api/Omoqo.Task
+    container_name: api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 7244:80
+
+  client:
+    build: /client/omoqo-task
+    container_name: client
+    ports:
+      - 4200:80
+    links:
+      - api
