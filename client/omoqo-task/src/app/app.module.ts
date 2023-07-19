@@ -54,5 +54,5 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 export class AppModule { }
 
 export function getBaseUrl() {
-  return 'https://localhost:7244';
+  return 'http://localhost:7244';
 }

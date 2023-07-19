@@ -53,35 +53,28 @@ namespace Application.Repositories
             }
         }
 
-        public async Task<IEnumerable<T>> ListAll(Expression<Func<T, bool>>? where = null,
-            int? skip = null, int? take = null)
+        public async Task<IEnumerable<T>> ListAll()
         {
             IQueryable<T> query = _dbSet;
-
-            if (where != null)
-            {
-                query = query.Where(where);
-            }
-
-            if (skip != null)
-            {
-                query = query.Skip(skip ?? 0);
-            }
-
-            if (take != null)
-            {
-                query = query.Take(take ?? 10);
-            }
 
             return await query.ToListAsync();
         }
 
         public async Task<T> Update(T entity)
         {
-            _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
+            T? dataEntity = await _dbSet.SingleOrDefaultAsync(x => x.Id == entity.Id);
+            if (dataEntity != null)
+            {
+                _dbSet.Update(entity);
+                await _context.SaveChangesAsync();
 
-            return entity;
+                return entity;
+            }
+            else
+            {
+                throw new KeyNotFoundException("Element not found");
+            }
+            
         }
     }
 }
