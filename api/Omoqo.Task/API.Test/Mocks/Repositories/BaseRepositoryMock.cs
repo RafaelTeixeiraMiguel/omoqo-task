@@ -31,24 +31,9 @@ namespace API.Test.Repositories.Mocks
             return Task.FromResult(_entities.SingleOrDefault(x => x.Id == id));
         }
 
-        public Task<IEnumerable<T>> ListAll(Expression<Func<T, bool>>? where = null, int? skip = null, int? take = null)
+        public Task<IEnumerable<T>> ListAll()
         {
             IEnumerable<T> entities = _entities.ToList();
-
-            if(where != null)
-            {
-                entities = entities.Where(where.Compile()).ToList();
-            }
-
-            if(skip != null)
-            {
-                entities = entities.Skip(skip ?? 0).ToList();
-            }
-
-            if (take != null)
-            {
-                entities = entities.Take(take ?? 0).ToList();
-            }
 
             return Task.FromResult(entities);
         }
