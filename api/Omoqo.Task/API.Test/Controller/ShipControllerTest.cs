@@ -28,7 +28,7 @@ namespace API.Test.Controller
 
             var result = await _shipRepository.Create(ship);
 
-            var shipResult = Assert.IsType<Ship>(result);
+            var shipResult = Assert.IsType<Ship>(result.Value);
             Assert.NotNull(shipResult);
         }
 
@@ -45,7 +45,7 @@ namespace API.Test.Controller
             };
 
             var result = await _shipRepository.Update(Ship);
-            var shipResult = Assert.IsType<Ship>(result);
+            var shipResult = Assert.IsType<Ship>(result.Value);
             Assert.NotNull(shipResult);
         }
 

@@ -13,7 +13,7 @@ namespace API.Test.Repositories.Mocks
         public async Task<Result<T>> Create(T entity)
         {
 
-            if(entity.IsValid) {
+            if(!entity.IsValid) {
                 return new Result<T>(entity.Errors);
             }
 
