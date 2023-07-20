@@ -6,10 +6,10 @@ namespace Domain.Interfaces.Repositories
 {
     public interface IBaseRepository<T> where T : BaseEntity
     {
-        Task<T?> GetById(Guid id);
-        Task<IEnumerable<T>> ListAll();
-        Task<T> Create(T entity);
-        Task<T> Update(T entity);
-        Task Delete(Guid id);
+        Task<Result<T?>> GetById(Guid id);
+        Task<Result<IEnumerable<T>>> ListAll();
+        Task<Result<T>> Create(T entity);
+        Task<Result<T>> Update(T entity);
+        Task<Result> Delete(Guid id);
     }
 }

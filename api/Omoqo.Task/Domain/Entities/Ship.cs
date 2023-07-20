@@ -12,8 +12,19 @@ namespace Domain.Entities
         {
         }
 
-        public Ship(ShipAddModel model)
+        public Ship(ShipAddRequest model)
         {
+            Name = model.Name;
+            Length = model.Length;
+            Width = model.Width;
+            Code = model.Code;
+
+            Validate();
+        }
+
+        public Ship(ShipUpdateRequest model)
+        {
+            Id = model.Id;
             Name = model.Name;
             Length = model.Length;
             Width = model.Width;

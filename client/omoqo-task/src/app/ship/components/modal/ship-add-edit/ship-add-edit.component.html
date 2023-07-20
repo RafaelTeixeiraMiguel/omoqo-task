@@ -1,27 +1,41 @@
 <div mat-dialog-title>
     <h1>Ship Form</h1>
 </div>
+
+<div class="flex flex-col p-8 pb-4 bg-white rounded-2xl shadow mt-5">
 <form [formGroup]="shipForm" (ngSubmit)="onFormSubmit()">
-    <div mat-dialog-content class="content">
+    <div mat-dialog-content class="content flex flex-col md:flex-row w-full">
         <div class="row">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="md:w-1/2 md:pr-3">
                 <mat-label>Name</mat-label>
-                <input matInput type="text" placeholder="Ex. MSC CANEBERRA" formControlName="name">
+                <input matInput type="text" placeholder="Ex. MSC CANEBERRA" formControlName="name" oninput="this.value = this.value.toUpperCase()">
+                <mat-error *ngIf="shipForm.controls['name'].hasError('required')">
+                    Name is required
+                  </mat-error>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="md:w-1/2 md:pr-3">
                 <mat-label>Code</mat-label>
-                <input matInput type="text" mask="SSSS-0000-S0" placeholder="Ex. AAAA-1111-A1" formControlName="code" oninput="this.value = this.value.toUpperCase()">
+                <input matInput type="text" mask="SSSS-0000-S0" placeholder="Ex. AAAA-1111-A1" formControlName="code" oninput="this.value = this.value.toUpperCase()" [dropSpecialCharacters]="false">
+                <mat-error *ngIf="shipForm.controls['code'].hasError('required')">
+                    Code is required
+                  </mat-error>
             </mat-form-field>
         </div>
 
         <div class="row">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="md:w-1/2 md:pr-3">
                 <mat-label>Length</mat-label>
                 <input matInput type="number" placeholder="Ex. 195" formControlName="length">
+                <mat-error *ngIf="shipForm.controls['code'].hasError('required')">
+                    Length is required
+                 </mat-error>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="md:w-1/2 md:pr-3">
                 <mat-label>Width</mat-label>
                 <input matInput type="number" placeholder="Ex. 195" formControlName="width">
+                <mat-error *ngIf="shipForm.controls['code'].hasError('required')">
+                    Width is required
+                </mat-error>
             </mat-form-field>
         </div>
 
@@ -31,3 +45,4 @@
         <button mat-raised-button color="primary" type="submit">{{data ? 'Update' : 'Save'}}</button>
     </div>
 </form>
+</div>

@@ -38,12 +38,15 @@ namespace API.Controllers
         {
             try
             {
-                var ships = await _shipRepository.ListAll();
+                Result<IEnumerable<Ship>> ships = await _shipRepository.ListAll();
+
+                if (!ships.Success)
+                    return BadRequest(new ErrorResponse(ships.Errors));
 
                 return Ok(new ShipListResponse
                 {
-                    Ships = _mapper.Map<IEnumerable<Ship>, List<ShipListItemResponse>>(ships),
-                    Total = ships.Count()
+                    Ships = _mapper.Map<IEnumerable<Ship>, List<ShipListItemResponse>>(ships.Value!),
+                    Total = ships.Value.Count()
                 });
             }
             catch (Exception ex)
@@ -67,9 +70,12 @@ namespace API.Controllers
         {
             try
             {
-                var ship = await _shipRepository.GetById(id);
+                Result<Ship?> ship = await _shipRepository.GetById(id);
 
-                return Ok(_mapper.Map<Ship, ShipGetResponse>(ship));
+                if (!ship.Success)
+                    return BadRequest(new ErrorResponse(ship.Errors));
+
+                return Ok(_mapper.Map<Ship, ShipGetResponse>(ship.Value!));
             }
             catch (Exception ex)
             {
@@ -88,13 +94,15 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public IActionResult Create(Ship ship)
+        public async Task<IActionResult> Create(ShipAddRequest ship)
         {
             try
             {
-                _shipRepository.Create(ship);
+                Result result = await _shipRepository.Create(_mapper.Map<ShipAddRequest, Ship>(ship));
 
-                return Ok();
+                return result.Success
+                ? Ok()
+                : BadRequest(new ErrorResponse(result.Errors));
             }
             catch (Exception ex)
             {
@@ -113,13 +121,15 @@ namespace API.Controllers
         [HttpPut()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(Ship ship)
+        public async Task<IActionResult> Update(ShipUpdateRequest ship)
         {
             try
             {
-                 await _shipRepository.Update(ship);
+                Result result = await _shipRepository.Update(_mapper.Map<ShipUpdateRequest, Ship>(ship));
 
-                return Ok();
+                return result.Success
+                ? Ok()
+                : BadRequest(new ErrorResponse(result.Errors));
             }
             catch (Exception ex)
             {
@@ -141,9 +151,11 @@ namespace API.Controllers
         {
             try
             {
-                await _shipRepository.Delete(id);
+                Result result = await _shipRepository.Delete(id);
 
-                return Ok();
+                return result.Success
+                ? Ok()
+                : BadRequest(new ErrorResponse(result.Errors));
             }
             catch (Exception ex)
             {

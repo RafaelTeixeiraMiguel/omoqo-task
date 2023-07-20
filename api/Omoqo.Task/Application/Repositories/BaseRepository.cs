@@ -18,62 +18,64 @@ namespace Application.Repositories
             _dbSet = context.Set<T>();
         }
 
-        public async Task<T> Create(T entity)
+        public async Task<Result<T>> Create(T entity)
         {
+            if (!entity.IsValid)
+            {
+                return new Result<T>(entity.Errors);
+            }
+
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
 
-            return entity;
+            return new Result<T>(entity); ;
         }
 
-        public async Task Delete(Guid id)
+        public async Task<Result> Delete(Guid id)
         {
-            T? entity = await GetById(id);
-            if (entity != null)
-            {
-                _dbSet.Remove(entity);
-                _context.SaveChangesAsync();
-            }
-            else
-            {
-                throw new KeyNotFoundException("Delete aborted, element not found");
-            }
+            Result<T?> selectResult = await GetById(id);
+
+            if (!selectResult.Success)
+                return new Result<T>(selectResult.Errors);
+
+            if (selectResult.Value == null)
+                return new Result<T>($"Element not found. Id: {id}");
+
+            _dbSet.Remove(selectResult.Value);
+            await _context.SaveChangesAsync();
+
+            return new Result<T>(selectResult.Value);
         }
 
-        public async Task<T?> GetById(Guid id)
+        public async Task<Result<T?>> GetById(Guid id)
         {
-            T? entity= await _dbSet.SingleOrDefaultAsync(x => x.Id == id);
-            if (entity != null)
-            {
-                return entity;
-            }
-            else
-            {
-                throw new KeyNotFoundException("Element not found");
-            }
+            return new Result<T?>(_dbSet.SingleOrDefault(x => x.Id == id));
         }
 
-        public async Task<IEnumerable<T>> ListAll()
+        public async Task<Result<IEnumerable<T>>> ListAll()
         {
             IQueryable<T> query = _dbSet;
 
-            return await query.ToListAsync();
+            return new Result<IEnumerable<T>>(await query.ToListAsync());
         }
 
-        public async Task<T> Update(T entity)
+        public async Task<Result<T>> Update(T entity)
         {
-            T? dataEntity = await _dbSet.SingleOrDefaultAsync(x => x.Id == entity.Id);
-            if (dataEntity != null)
-            {
-                _dbSet.Update(entity);
-                await _context.SaveChangesAsync();
+            Result<T?> selectResult = await GetById(entity.Id);
 
-                return entity;
-            }
-            else
-            {
-                throw new KeyNotFoundException("Element not found");
-            }
+            if (!selectResult.Success)
+                return new Result<T>(selectResult.Errors);
+
+            if (selectResult.Value == null)
+                return new Result<T>($"Element not found. Id: {entity.Id}");
+
+            if (!entity.IsValid)
+                return new Result<T>(entity.Errors);
+
+            _dbSet.Update(selectResult.Value);
+            await _context.SaveChangesAsync();
+
+            return new Result<T>(entity);
             
         }
     }
