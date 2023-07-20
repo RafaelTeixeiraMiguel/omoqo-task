@@ -61,22 +61,21 @@ namespace Application.Repositories
 
         public async Task<Result<T>> Update(T entity)
         {
-            Result<T?> selectResult = await GetById(entity.Id);
+            try
+            {
+                if (!entity.IsValid)
+                    return new Result<T>(entity.Errors);
 
-            if (!selectResult.Success)
-                return new Result<T>(selectResult.Errors);
+                T updateResult = _dbSet.Update(entity).Entity;
+                await _context.SaveChangesAsync();
 
-            if (selectResult.Value == null)
-                return new Result<T>($"Element not found. Id: {entity.Id}");
+                return new Result<T>(entity);
+            }
+            catch (Exception ex)
+            {
+                return new Result<T>(ex);
+            }
 
-            if (!entity.IsValid)
-                return new Result<T>(entity.Errors);
-
-            _dbSet.Update(selectResult.Value);
-            await _context.SaveChangesAsync();
-
-            return new Result<T>(entity);
-            
         }
     }
 }
