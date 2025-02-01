@@ -14,7 +14,7 @@ A CRUD application that allows the user to perform all operations on a SHIP.
 Clone command
 
 ```bash
-  git clone https://github.com/RafaelTeixeiraMiguel/omoqo-task.git
+  git clone https://github.com/RafaelTeixeiraMiguel/ship-crud.git
 ```
 
 Go to the project directory
