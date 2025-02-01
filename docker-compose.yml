@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   api:
-    build: /api/Omoqo.Task
+    build: /api/Ship.CRUD
     container_name: api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -10,7 +10,7 @@ services:
       - 7244:80
 
   client:
-    build: /client/omoqo-task
+    build: /client/ship-crud
     container_name: client
     ports:
       - 4200:80

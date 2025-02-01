@@ -7,5 +7,5 @@ RUN npm run build
 
 FROM nginx:alpine
 VOLUME /var/cache/nginx
-COPY --from=angular app/dist/omoqo-task /usr/share/nginx/html
+COPY --from=angular app/dist/ship-crud /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
