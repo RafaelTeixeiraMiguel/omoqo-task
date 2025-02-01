@@ -1,5 +1,5 @@
 
-# The Task
+# Ship CRUD
 
 A CRUD application that allows the user to perform all operations on a SHIP.
 
@@ -20,7 +20,7 @@ Clone command
 Go to the project directory
 
 ```bash
-  cd omoqo-task
+  cd ship-crud
 ```
 
 Run docker compose to start both applications
